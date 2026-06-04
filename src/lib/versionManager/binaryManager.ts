@@ -160,12 +160,14 @@ export async function getInstalledVersions(dataDir?: string): Promise<string[]> 
   try {
     const entries = await fs.readdir(binDir);
     return entries
-      .filter(
-        (e) =>
-          typeof e === "string" &&
-          e.startsWith("cliproxyapi-") &&
-          fsSync.statSync(path.join(/* turbopackIgnore: true */ binDir, e)).isDirectory()
-      )
+      .filter((e) => {
+        if (typeof e !== "string" || !e.startsWith("cliproxyapi-")) return false;
+        try {
+          return fsSync.statSync(path.join(/* turbopackIgnore: true */ binDir, e)).isDirectory();
+        } catch {
+          return false;
+        }
+      })
       .map((e) => e.replace("cliproxyapi-", ""));
   } catch {
     return [];

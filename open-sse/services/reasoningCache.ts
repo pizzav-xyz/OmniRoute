@@ -56,7 +56,7 @@ const REASONING_REPLAY_MODEL_PATTERNS = [
   /^mimo[-.]?v\d/i,
 ];
 
-const DEEPSEEK_V4_MODEL_PATTERN = /deepseek[-/]v4[-.](flash|pro)/i;
+const DEEPSEEK_V4_MODEL_PATTERN = /deepseek[-/]v4[-.](flash|pro)(-free)?|zen\/deepseek-v4/i;
 
 export function isDeepSeekReasoningModel(params: {
   provider: string;
