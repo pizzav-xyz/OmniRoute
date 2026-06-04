@@ -12,7 +12,10 @@ const KIRO_AUTH_SERVICE = "https://prod.us-east-1.auth.desktop.kiro.dev";
 const socialExchangeSchema = z.object({
   deviceCode: z.string().min(1, "Missing deviceCode or provider"),
   provider: z.string().min(1, "Missing deviceCode or provider"),
-  targetProvider: z.string().optional(),
+  targetProvider: z
+    .string()
+    .optional()
+    .transform((v) => v?.trim() || "kiro"),
 });
 
 /**
@@ -86,7 +89,7 @@ export async function POST(request: Request) {
     }
 
     const connection: any = await createProviderConnection({
-      provider: targetProvider || "kiro",
+      provider: targetProvider,
       authType: "oauth",
       accessToken: data.accessToken,
       refreshToken: data.refreshToken,
